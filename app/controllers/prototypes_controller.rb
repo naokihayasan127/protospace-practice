@@ -1,6 +1,7 @@
 class PrototypesController < ApplicationController
   before_action :set_prototype, except: [:index, :new, :create]
-
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :contributor_confirmation, only: [:edit, :update, :destroy]
   def index
     @prototypes = Prototype.all
   end
@@ -11,7 +12,6 @@ class PrototypesController < ApplicationController
 
   def create
     @prototype = Prototype.new(prototypes_params)
-    # ビフォーアアクションによって上記の記述は不必要になる
     if @prototype.save
       redirect_to root_path
     else
@@ -20,8 +20,8 @@ class PrototypesController < ApplicationController
   end
 
   def show
-    @prototype = Prototype.find(params[:id])
-    # ビフォーアアクションによって上記の記述は不必要になる
+    @comment = Comment.new
+    @comments = @prototype.comments.includes(:user)
   end
 
   def edit
@@ -58,5 +58,9 @@ class PrototypesController < ApplicationController
 
   def set_prototype
     @prototype = Prototype.find(params[:id])
+  end
+
+  def contributor_confirmation
+    redirect_to root_path unless current_user == @prototype.user
   end
 end
