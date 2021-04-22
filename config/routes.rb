@@ -6,6 +6,3 @@ Rails.application.routes.draw do
   end
   resources :users, only: :show
 end
-
-#If no route matches
-match ":url" => "application#redirect_user", :constraints => { :url => /.*/ }
