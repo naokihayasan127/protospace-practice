@@ -21,18 +21,14 @@ class PrototypesController < ApplicationController
 
   def show
     @comment = Comment.new
-    @comments = @prototype.comments.includes(:user)
+    @comments = @prototype.comments
   end
 
   def edit
-    @prototype = Prototype.find(params[:id])
-    # ビフォーアアクションによって上記の記述は不必要になる
+    
   end
 
   def update
-    
-    @prototype = Prototype.find(params[:id])
-    # ビフォーアアクションによって上記の記述は不必要になる
     if @prototype.update(prototypes_params)
       redirect_to prototype_path
     else
@@ -41,8 +37,6 @@ class PrototypesController < ApplicationController
   end
   
   def destroy
-    @prototype = Prototype.find(params[:id])
-    # ビフォーアアクションによって上記の記述は不必要になる
     if @prototype.destroy
       redirect_to root_path
     else
